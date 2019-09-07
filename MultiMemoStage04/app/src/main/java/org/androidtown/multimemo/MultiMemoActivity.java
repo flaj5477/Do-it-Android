@@ -45,6 +45,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 	MemoListAdapter mMemoListAdapter;
 
 	/**
+	 *
 	 * 메모 갯수
 	 */
 	int mMemoCount = 0;

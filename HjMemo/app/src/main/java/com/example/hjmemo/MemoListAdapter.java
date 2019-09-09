@@ -17,8 +17,16 @@ class MemoListAdapter extends BaseAdapter {
         mContext = context;
     }   //생성자
 
+    public void clear() {
+        mItems.clear();
+    }
+
     public void addItem(MemoListItem it) {
         mItems.add(it);
+    }
+
+    public void setListItems(List<MemoListItem> lit) {
+        mItems = lit;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -32,26 +40,37 @@ class MemoListAdapter extends BaseAdapter {
         // set current item data  (MemoListItemView 객체에 MemoListItem의 아이템 데이터를 설정 해 주는 부분)
         itemView.setContents(0, ((String) mItems.get(position).getData(0)));    //날짜
         itemView.setContents(1, ((String) mItems.get(position).getData(1)));    //메모제목
-        itemView.setContents(4, ((String) mItems.get(position).getData(4)));    //이미지
+        itemView.setContents(2, ((String) mItems.get(position).getData(5)));    //이미지
 
-        itemView.setMediaState( mItems.get(position).getData(8));           //녹음파일있는지 없는지
+        itemView.setMediaState( (String)mItems.get(position).getData(8));           //녹음파일있는지 없는지
 
         return itemView;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return  mItems.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public Object getItem(int position) {
+        return mItems.get(position);
     }
 
+    public boolean areAllItemsSelectable() {
+        return false;
+    }
+
+    public boolean isSelectable(int position) {
+        try {
+            return mItems.get(position).isSelectable();
+        } catch (IndexOutOfBoundsException ex) {
+            return false;
+        }
+    }
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
 

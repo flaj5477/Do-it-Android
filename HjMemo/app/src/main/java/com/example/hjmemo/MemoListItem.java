@@ -92,7 +92,7 @@ public class MemoListItem {
 	/**
 	 * Get data
 	 */
-	public String getData(int index) {
+	public Object getData(int index) {
 		if (mData == null || index >= mData.length) {
 			return null;
 		}

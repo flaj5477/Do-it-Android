@@ -20,7 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 /**
- * ¸ÖÆ¼¸Þ¸ð ¸ÞÀÎ ¾×Æ¼ºñÆ¼
+ * ï¿½ï¿½Æ¼ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼
  *
  * @author Mike
  */
@@ -29,23 +29,23 @@ public class MultiMemoActivity extends Activity {
 	public static final String TAG = "MultiMemoActivity";
 
 	/**
-	 * ¸Þ¸ð ¸®½ºÆ®ºä
+	 * ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½
 	 */
 	ListView mMemoListView;
 
 	/**
-	 * ¸Þ¸ð ¸®½ºÆ® ¾î´ðÅÍ
+	 * ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	MemoListAdapter mMemoListAdapter;
 
 	/**
-	 * ¸Þ¸ð °¹¼ö
+	 * ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 */
 	int mMemoCount = 0;
 
 
 	/**
-	 * µ¥ÀÌÅÍº£ÀÌ½º ÀÎ½ºÅÏ½º
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½
 	 */
 	public static MemoDatabase mDatabase = null;
 
@@ -56,7 +56,7 @@ public class MultiMemoActivity extends Activity {
 
         // SD Card checking
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-    		Toast.makeText(this, "SD Ä«µå°¡ ¾ø½À´Ï´Ù. SD Ä«µå¸¦ ³ÖÀº ÈÄ ´Ù½Ã ½ÇÇàÇÏ½Ê½Ã¿À.", Toast.LENGTH_LONG).show();
+    		Toast.makeText(this, "SD ì¹´ë“œê°€ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. SDì¹´ë“œë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”.", Toast.LENGTH_LONG).show();
     		return;
     	} else {
     		String externalPath = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -75,7 +75,7 @@ public class MultiMemoActivity extends Activity {
     	}
 
 
-        // ¸Þ¸ð ¸®½ºÆ®
+        // ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
         mMemoListView = (ListView)findViewById(R.id.memoList);
     	mMemoListAdapter = new MemoListAdapter(this);
     	mMemoListView.setAdapter(mMemoListAdapter);
@@ -86,7 +86,7 @@ public class MultiMemoActivity extends Activity {
 		});
 
 
-        // »õ ¸Þ¸ð ¹öÆ° ¼³Á¤
+        // ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½
         TitleBitmapButton newMemoBtn = (TitleBitmapButton)findViewById(R.id.newMemoBtn);
     	newMemoBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -98,7 +98,7 @@ public class MultiMemoActivity extends Activity {
 			}
 		});
 
-    	// ´Ý±â ¹öÆ° ¼³Á¤
+    	// ï¿½Ý±ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½
         TitleBitmapButton closeBtn = (TitleBitmapButton)findViewById(R.id.closeBtn);
         closeBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -114,10 +114,10 @@ public class MultiMemoActivity extends Activity {
 
 	protected void onStart() {
 
-        // µ¥ÀÌÅÍº£ÀÌ½º ¿­±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
         openDatabase();
 
-        // ¸Þ¸ð µ¥ÀÌÅÍ ·Îµù
+        // ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
         loadMemoListData();
 
 
@@ -129,7 +129,7 @@ public class MultiMemoActivity extends Activity {
 
 
 	/**
-     * µ¥ÀÌÅÍº£ÀÌ½º ¿­±â (µ¥ÀÌÅÍº£ÀÌ½º°¡ ¾øÀ» ¶§´Â ¸¸µé±â)
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
      */
     public void openDatabase() {
 		// open database
@@ -150,7 +150,7 @@ public class MultiMemoActivity extends Activity {
 
 
     /**
-     * ¸Þ¸ð ¸®½ºÆ® µ¥ÀÌÅÍ ·Îµù
+     * ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
      */
     public int loadMemoListData() {
      	String SQL = "select _id, INPUT_DATE, CONTENT_TEXT, ID_PHOTO, ID_VIDEO, ID_VOICE, ID_HANDWRITING from MEMO order by INPUT_DATE desc";
@@ -200,7 +200,7 @@ public class MultiMemoActivity extends Activity {
     }
 
 	/**
-	 * »çÁø µ¥ÀÌÅÍ URI °¡Á®¿À±â
+	 * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ URI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public String getPhotoUriStr(String id_photo) {
 		String photoUriStr = null;
@@ -222,7 +222,7 @@ public class MultiMemoActivity extends Activity {
     private void viewMemo(int position) {
     	MemoListItem item = (MemoListItem)mMemoListAdapter.getItem(position);
 
-    	// ¸Þ¸ð º¸±â ¾×Æ¼ºñÆ¼ ¶ç¿ì±â
+    	// ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½
 		Intent intent = new Intent(getApplicationContext(), MemoInsertActivity.class);
 		intent.putExtra(BasicInfo.KEY_MEMO_MODE, BasicInfo.MODE_VIEW);
 		intent.putExtra(BasicInfo.KEY_MEMO_ID, item.getId());
@@ -247,7 +247,7 @@ public class MultiMemoActivity extends Activity {
 
 
     /**
-     * ´Ù¸¥ ¾×Æ¼ºñÆ¼ÀÇ ÀÀ´ä Ã³¸®
+     * ï¿½Ù¸ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
      */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

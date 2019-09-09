@@ -46,14 +46,14 @@ public class MemoListItemView extends LinearLayout {
 			itemDate.setText(data);
 		} else if (index == 1) {
 			itemText.setText(data);
-		} else if (index == 2) {
+		} else if (index == 2) {		//손그림
 			if (data == null || data.equals("-1") || data.equals("")) {
 				itemHandwriting.setImageBitmap(null);
 			} else {
 				itemHandwriting.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + data));
 			}
-		} else if (index == 3) {
-			if (data == null || data.equals("-1") || data.equals("")) {
+		} else if (index == 3) {		//사진
+			if (data == null || data.equals("	-1") || data.equals("")) {
 				itemPhoto.setImageResource(R.drawable.person);
 			} else {
 				itemPhoto.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + data));

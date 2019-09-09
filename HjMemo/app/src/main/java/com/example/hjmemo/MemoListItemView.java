@@ -42,11 +42,11 @@ class MemoListItemView extends LinearLayout {
             itemDate.setText(data);     //날짜 설정
         } else if (index == 1) {
             itemTitle.setText(data);     //텍스트메모 설정
-        }  else if (index == 4) {        //MemoListItem.id_photo
+        }  else if (index == 2) {        //data = 이미지 파일 경로
             if (data == null || data.equals("-1") || data.equals("")) {
                 itemImageView.setImageResource(R.drawable.person_add);
             } else {
-                    itemImageView.setImageResource(R.drawable.person_add_en);
+                itemImageView.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + data));
             }
 
         } else {
@@ -56,7 +56,7 @@ class MemoListItemView extends LinearLayout {
 
     public void setMediaState(String sVoiceUri) {     //녹음 상태에 따라 아이콘 설정
         if(sVoiceUri == null || sVoiceUri.trim().length() < 1 || sVoiceUri.equals("-1")) {
-            itemVoiceState.setImageResource(R.drawable.icon_voice_empty);
+            itemVoiceState.setImageResource(R.drawable.icon_voice);
         } else {
             itemVoiceState.setImageResource(R.drawable.icon_voice);
         }

@@ -12,76 +12,83 @@
         android:layout_alignParentTop="true"
         android:background="#ffffffff"
         >
+
         <TextView
             android:id="@+id/itemCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"
+            android:gravity="center"
             android:text="멀티메모"
-            android:layout_alignParentTop="true"
-            android:gravity="right"
-            android:textColor="#ffc35d03"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            />
+            android:textColor="#C79120"
+            android:textSize="24sp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
     <ListView
         android:id="@+id/memoList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        android:layout_below="@+id/titleLayout"
         android:layout_above="@+id/buttonLayout"
-        android:divider="#00000000"
-        android:listSelector="#00000000"
+        android:layout_below="@+id/titleLayout"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
         android:cacheColorHint="#00000000"
-        />
+        android:divider="#00000000"
+        android:listSelector="#00000000" />
+
     <LinearLayout
         android:id="@+id/buttonLayout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        >
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal">
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/setBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_list_edit"
-                android:maxHeight="50dp"
-                android:maxWidth="50dp"
+                android:layout_weight="0"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
+                android:maxWidth="30dp"
+                android:maxHeight="30dp"
                 android:scaleType="fitCenter"
-                android:background="#ffffff"/>
+                android:src="@drawable/icon_list_edit" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
-                android:layout_marginRight="120dp"
-                android:text="00개 메모"
-                android:textSize="20dp"
                 android:layout_gravity="center"
-                />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="00개 메모"
+                android:textColor="#C79120"
+                android:textSize="20dp" />
+
             <ImageButton
                 android:id="@+id/newMemoBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_edit"
-                android:maxHeight="50dp"
-                android:maxWidth="50dp"
+                android:layout_weight="0"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
+                android:maxWidth="30dp"
+                android:maxHeight="50dp"
                 android:scaleType="fitCenter"
-                android:background="#ffffff"/>
+                android:src="@drawable/icon_edit" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

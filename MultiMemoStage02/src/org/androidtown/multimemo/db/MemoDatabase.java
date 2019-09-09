@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * ¸Þ¸ð µ¥ÀÌÅÍº£ÀÌ½º
+ * ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½
  */
 public class MemoDatabase {
 
 	public static final String TAG = "MemoDatabase";
 
 	/**
-	 * ½Ì±ÛÅæ ÀÎ½ºÅÏ½º
+	 * ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½
 	 */
 	private static MemoDatabase database;
 
@@ -57,24 +57,24 @@ public class MemoDatabase {
     private DatabaseHelper dbHelper;
 
     /**
-     * SQLiteDatabase ÀÎ½ºÅÏ½º
+     * SQLiteDatabase ï¿½Î½ï¿½ï¿½Ï½ï¿½
      */
     private SQLiteDatabase db;
 
     /**
-     * ÄÁÅØ½ºÆ® °´Ã¼
+     * ï¿½ï¿½ï¿½Ø½ï¿½Æ® ï¿½ï¿½Ã¼
      */
     private Context context;
 
     /**
-     * »ý¼ºÀÚ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
 	private MemoDatabase(Context context) {
 		this.context = context;
 	}
 
 	/**
-	 * ÀÎ½ºÅÏ½º °¡Á®¿À±â
+	 * ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static MemoDatabase getInstance(Context context) {
 		if (database == null) {
@@ -85,7 +85,7 @@ public class MemoDatabase {
 	}
 
 	/**
-	 * µ¥ÀÌÅÍº£ÀÌ½º ¿­±â
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 */
     public boolean open() {
     	println("opening database [" + BasicInfo.DATABASE_NAME + "].");
@@ -97,7 +97,7 @@ public class MemoDatabase {
     }
 
     /**
-     * µ¥ÀÌÅÍº£ÀÌ½º ´Ý±â
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½Ý±ï¿½
      */
     public void close() {
     	println("closing database [" + BasicInfo.DATABASE_NAME + "].");
@@ -326,8 +326,6 @@ public class MemoDatabase {
                               int newVersion)
         {
         	println("Upgrading database from version " + oldVersion + " to " + newVersion + ".");
-
-
 
         }
     }

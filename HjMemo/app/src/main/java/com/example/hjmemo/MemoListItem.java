@@ -39,7 +39,7 @@ public class MemoListItem {
 	 * @param obj03 - memo picture_id
 	 *
 	 */
-	public MemoListItem(String memoId, String memoDate, String memoText,
+	public MemoListItem(String memoId, String memoDate, String memoTitle, String memoText,
                         String id_handwriting, String uri_handwriting,
                         String id_photo, String uri_photo,
                         String id_voice, String uri_voice
@@ -48,13 +48,14 @@ public class MemoListItem {
 		mId = memoId;
 		mData = new String[10];
 		mData[0] = memoDate;
-		mData[1] = memoText;
-		mData[2] = id_handwriting;
-		mData[3] = uri_handwriting;
-		mData[4] = id_photo;
-		mData[5] = uri_photo;
-		mData[6] = id_voice;
-		mData[7] = uri_voice;
+		mData[1] = memoTitle;
+		mData[2] = memoText;
+		mData[3] = id_handwriting;
+		mData[4] = uri_handwriting;
+		mData[5] = id_photo;
+		mData[6] = uri_photo;
+		mData[7] = id_voice;
+		mData[8] = uri_voice;
 	}
 
 	/**
@@ -92,7 +93,7 @@ public class MemoListItem {
 	/**
 	 * Get data
 	 */
-	public Object getData(int index) {
+	public String getData(int index) {
 		if (mData == null || index >= mData.length) {
 			return null;
 		}

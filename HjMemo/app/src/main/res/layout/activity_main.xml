@@ -22,7 +22,7 @@
             android:layout_marginRight="4dp"
             android:gravity="center"
             android:text="멀티메모"
-            android:textColor="#C79120"
+            android:textColor="#FF3696FF"
             android:textSize="24sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="00개 메모"
-                android:textColor="#C79120"
+                android:textColor="#FF3696FF"
                 android:textSize="20dp" />
 
             <ImageButton

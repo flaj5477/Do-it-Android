@@ -40,7 +40,7 @@ class MemoListAdapter extends BaseAdapter {
         // set current item data  (MemoListItemView 객체에 MemoListItem의 아이템 데이터를 설정 해 주는 부분)
         itemView.setContents(0, ((String) mItems.get(position).getData(0)));    //날짜
         itemView.setContents(1, ((String) mItems.get(position).getData(1)));    //메모제목
-        itemView.setContents(2, ((String) mItems.get(position).getData(5)));    //이미지
+        itemView.setContents(2, ((String) mItems.get(position).getData(6)));    //이미지 uri
 
         itemView.setMediaState( (String)mItems.get(position).getData(8));           //녹음파일있는지 없는지
 

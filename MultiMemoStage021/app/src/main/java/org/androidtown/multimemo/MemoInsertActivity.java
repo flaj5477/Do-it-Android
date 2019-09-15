@@ -35,7 +35,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 /**
- * »õ ¸Þ¸ð / ¸Þ¸ð º¸±â ¾×Æ¼ºñÆ¼
+ * ï¿½ï¿½ ï¿½Þ¸ï¿½ / ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼
  *
  * @author Mike
  */
@@ -184,11 +184,11 @@ public class MemoInsertActivity extends Activity {
 		if(mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {
 			processIntent(intent);
 
-			titleBackgroundBtn.setText("¸Þ¸ð º¸±â");
-			insertSaveBtn.setText("¼öÁ¤");
+			titleBackgroundBtn.setText("ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½");
+			insertSaveBtn.setText("ï¿½ï¿½ï¿½ï¿½");
 		} else {
-			titleBackgroundBtn.setText("»õ ¸Þ¸ð");
-			insertSaveBtn.setText("ÀúÀå");
+			titleBackgroundBtn.setText("ï¿½ï¿½ ï¿½Þ¸ï¿½");
+			insertSaveBtn.setText("ï¿½ï¿½ï¿½ï¿½");
 		}
 	}
 
@@ -239,13 +239,13 @@ public class MemoInsertActivity extends Activity {
     }
 
 	/**
-	 * ÇÏ´Ü ¸Þ´º ¹öÆ° ¼³Á¤
+	 * ï¿½Ï´ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½
 	 */
     public void setBottomButtons() {
     	insertSaveBtn = (TitleBitmapButton)findViewById(R.id.insert_saveBtn);
     	insertCancelBtn = (TitleBitmapButton)findViewById(R.id.insert_cancelBtn);
 
-    	// ÀúÀå ¹öÆ°
+    	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     	insertSaveBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				boolean isParsed = parseValues();
@@ -259,7 +259,7 @@ public class MemoInsertActivity extends Activity {
 			}
 		});
 
-    	// ´Ý±â ¹öÆ°
+    	// ï¿½Ý±ï¿½ ï¿½ï¿½Æ°
     	insertCancelBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				finish();
@@ -269,7 +269,7 @@ public class MemoInsertActivity extends Activity {
 
 
     /**
-     * µ¥ÀÌÅÍº£ÀÌ½º¿¡ ·¹ÄÚµå Ãß°¡
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ß°ï¿½
      */
     private void saveInput() {
 
@@ -312,7 +312,7 @@ public class MemoInsertActivity extends Activity {
     }
 
     /**
-     * µ¥ÀÌÅÍº£ÀÌ½º ·¹ÄÚµå ¼öÁ¤
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
      */
     private void modifyInput() {
 
@@ -401,10 +401,10 @@ public class MemoInsertActivity extends Activity {
 
 
     /**
-     * ¾Ù¹üÀÇ »çÁøÀ» »çÁø Æú´õ¿¡ º¹»çÇÑ ÈÄ, PICTURE Å×ÀÌºí¿¡ »çÁø Á¤º¸ Ãß°¡
-     * ÀÌ¹ÌÁöÀÇ ÀÌ¸§Àº ÇöÀç ½Ã°£À» ±âÁØÀ¸·Î ÇÑ getTime() °ªÀÇ ¹®ÀÚ¿­ »ç¿ë
+     * ï¿½Ù¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, PICTURE ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+     * ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ getTime() ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½
      *
-     * @return »õ·Î Ãß°¡µÈ ÀÌ¹ÌÁöÀÇ ÀÌ¸§
+     * @return ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
      */
 
     private String insertPhoto() {
@@ -431,7 +431,7 @@ public class MemoInsertActivity extends Activity {
 
 	    		File photoFolder = new File(BasicInfo.FOLDER_PHOTO);
 
-				//Æú´õ°¡ ¾ø´Ù¸é Æú´õ¸¦ »ý¼ºÇÑ´Ù.
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 				if(!photoFolder.isDirectory()){
 					Log.d(TAG, "creating photo folder : " + photoFolder);
 					photoFolder.mkdirs();
@@ -517,24 +517,24 @@ public class MemoInsertActivity extends Activity {
     	int monthOfYear = mCalendar.get(Calendar.MONTH);
     	int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 
-    	insertDateButton.setText(year + "³â " + (monthOfYear+1) + "¿ù " + dayOfMonth + "ÀÏ");
+    	insertDateButton.setText(year + "ï¿½ï¿½ " + (monthOfYear+1) + "ï¿½ï¿½ " + dayOfMonth + "ï¿½ï¿½");
 
     }
 
 
     /**
-     * ³¯Â¥ ¼³Á¤ ¸®½º³Ê
+     * ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 			mCalendar.set(year, monthOfYear, dayOfMonth);
-			insertDateButton.setText(year + "³â " + (monthOfYear+1) + "¿ù " + dayOfMonth + "ÀÏ");
+			insertDateButton.setText(year + "ï¿½ï¿½ " + (monthOfYear+1) + "ï¿½ï¿½ " + dayOfMonth + "ï¿½ï¿½");
 		}
 	};
 
 
 	/**
-	 * ÀÏÀÚ¿Í ¸Þ¸ð È®ÀÎ
+	 * ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Þ¸ï¿½ È®ï¿½ï¿½
 	 */
     private boolean parseValues() {
     	String insertDateStr = insertDateButton.getText().toString();
@@ -563,9 +563,9 @@ public class MemoInsertActivity extends Activity {
 		switch(id) {
 			case BasicInfo.CONFIRM_TEXT_INPUT:
 				builder = new AlertDialog.Builder(this);
-				builder.setTitle("¸Þ¸ð");
-				builder.setMessage("ÅØ½ºÆ®¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
-				builder.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {
+				builder.setTitle("ï¿½Þ¸ï¿½");
+				builder.setMessage("ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+				builder.setPositiveButton("È®ï¿½ï¿½", new DialogInterface.OnClickListener() {
 	        	    public void onClick(DialogInterface dialog, int whichButton) {
 
                     }
@@ -577,13 +577,13 @@ public class MemoInsertActivity extends Activity {
 				builder = new AlertDialog.Builder(this);
 
 				mSelectdContentArray = R.array.array_photo;
-				builder.setTitle("¼±ÅÃÇÏ¼¼¿ä");
+				builder.setTitle("ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½");
 				builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int whichButton) {
 	                	mChoicedArrayItem = whichButton;
 	                }
 	            });
-				builder.setPositiveButton("¼±ÅÃ", new DialogInterface.OnClickListener() {
+				builder.setPositiveButton("ï¿½ï¿½ï¿½ï¿½", new DialogInterface.OnClickListener() {
 	        	    public void onClick(DialogInterface dialog, int whichButton) {
 	        	    	if(mChoicedArrayItem == 0 ) {
 	        	    		showPhotoCaptureActivity();
@@ -592,7 +592,7 @@ public class MemoInsertActivity extends Activity {
 	        	    	}
 	                }
 	            });
-				builder.setNegativeButton("Ãë¼Ò", new DialogInterface.OnClickListener() {
+				builder.setNegativeButton("ï¿½ï¿½ï¿½", new DialogInterface.OnClickListener() {
 		             public void onClick(DialogInterface dialog, int whichButton) {
 
 		            	 Log.d(TAG, "whichButton3        ======        " + whichButton);
@@ -605,13 +605,13 @@ public class MemoInsertActivity extends Activity {
 				builder = new AlertDialog.Builder(this);
 
 				mSelectdContentArray = R.array.array_photo_ex;
-				builder.setTitle("¼±ÅÃÇÏ¼¼¿ä");
+				builder.setTitle("ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½");
 				builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int whichButton) {
 	                	mChoicedArrayItem = whichButton;
 	                }
 	            });
-				builder.setPositiveButton("¼±ÅÃ", new DialogInterface.OnClickListener() {
+				builder.setPositiveButton("ï¿½ï¿½ï¿½ï¿½", new DialogInterface.OnClickListener() {
 	        	    public void onClick(DialogInterface dialog, int whichButton) {
 	        	    	if(mChoicedArrayItem == 0) {
 	        	    		showPhotoCaptureActivity();
@@ -625,7 +625,7 @@ public class MemoInsertActivity extends Activity {
 	        	    	}
 	                }
 	            });
-				builder.setNegativeButton("Ãë¼Ò", new DialogInterface.OnClickListener() {
+				builder.setNegativeButton("ï¿½ï¿½ï¿½", new DialogInterface.OnClickListener() {
 		             public void onClick(DialogInterface dialog, int whichButton) {
 
 	                 }
@@ -651,13 +651,13 @@ public class MemoInsertActivity extends Activity {
 	}
 
     /**
-     * ´Ù¸¥ ¾×Æ¼ºñÆ¼·ÎºÎÅÍÀÇ ÀÀ´ä Ã³¸®
+     * ï¿½Ù¸ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
      */
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		switch(requestCode) {
-			case BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY:  // »çÁø Âï´Â °æ¿ì
+			case BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY:  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 				Log.d(TAG, "onActivityResult() for REQ_PHOTO_CAPTURE_ACTIVITY.");
 
 				if (resultCode == RESULT_OK) {
@@ -682,7 +682,7 @@ public class MemoInsertActivity extends Activity {
 
 				break;
 
-			case BasicInfo.REQ_PHOTO_SELECTION_ACTIVITY:  // »çÁøÀ» ¾Ù¹ü¿¡¼­ ¼±ÅÃÇÏ´Â °æ¿ì
+			case BasicInfo.REQ_PHOTO_SELECTION_ACTIVITY:  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 				Log.d(TAG, "onActivityResult() for REQ_PHOTO_LOADING_ACTIVITY.");
 
 				if (resultCode == RESULT_OK) {
@@ -712,7 +712,7 @@ public class MemoInsertActivity extends Activity {
 
 
 	/**
-     * ÀúÀåµÈ »çÁø ÆÄÀÏ È®ÀÎ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
      */
     private boolean checkCapturedPhotoFile() {
     	File file = new File(BasicInfo.FOLDER_PHOTO + "captured");
@@ -722,6 +722,4 @@ public class MemoInsertActivity extends Activity {
 
     	return false;
     }
-
-
 }

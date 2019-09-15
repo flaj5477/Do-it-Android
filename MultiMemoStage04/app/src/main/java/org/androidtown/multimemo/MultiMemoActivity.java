@@ -269,6 +269,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 
 
 				mMemoListAdapter.addItem(new MemoListItem(memoId, dateStr, memoStr, handwritingId, handwritingUriStr, photoId, photoUriStr, videoId, videoUriStr, voiceId, voiceUriStr));
+
 			}
 
 			outCursor.close();

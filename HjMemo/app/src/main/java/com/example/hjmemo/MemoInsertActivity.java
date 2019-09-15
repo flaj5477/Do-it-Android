@@ -1,0 +1,646 @@
+package com.example.hjmemo;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+
+import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+
+public class MemoInsertActivity extends Activity {
+
+    public static final String TAG = "MemoInsertActivity";
+
+    ImageButton DeleteBtn;      //삭제버튼
+    ImageButton VoiceBtn;       //음성버튼
+    ImageButton HandwritingBtn; //손그림버튼
+    ImageButton PhotoBtn;       //사진버튼
+    ImageButton SaveBtn;        //저장버튼
+
+    EditText mTitleEdit;
+    TextView date_space;
+    EditText mMemoEdit;         //텍스트 표시 객체
+    ImageView mPhoto;           //사진 표시 객체
+    View insert_handwriting;    //손그림 표시 객체
+
+    String mMemoMode;           //메모 모드(손그림입력모드인지, 그런거...?)
+    String mMemoId;             //메모 아이디
+    String mMemoDate;           //메모 날짜
+
+    String mMediaPhotoId;       //사진 아이디
+    String mMediaPhotoUri;      //사진 uri주소
+    String mMediaVoiceId;       //음성 아이디
+    String mMediaVoiceUri;      //음성 uri주소
+    String mMediaHandwritingId; //손그림 아이디
+    String mMediaHandwritingUri;//손그림 uri주소
+
+    String tempPhotoUri;        //임시 사진 uri
+    String tempVoiceUri;        //임시 음성 uri
+    String tempHandwritingUri;  //임시 손그림 uri
+
+    String mDateStr;            //날짜 스트링
+    String mTitleStr;
+    String mMemoStr;            //메모 스트링
+
+    Bitmap resultPhotoBitmap;   //결과 사진 비트맵
+    Bitmap resultHandwritingBitmap; //결과 손그림 비트맵
+
+    boolean isPhotoCaptured;
+    boolean isVoiceRecorded;
+    boolean isHandwritingMade;
+
+    boolean isPhotoFileSaved;
+    boolean isVoiceFileSaved;
+    boolean isHandwritingFileSaved;
+
+    boolean isPhotoCanceled;
+    boolean isVoiceCanceled;
+    boolean isHandwritingCanceled;
+
+    Calendar mCalendar = Calendar.getInstance();
+    TextView insert_date;
+
+    int mSelectdContentArray;
+    int mChoicedArrayItem;
+
+    int textViewMode = 0;
+    EditText insert_memoEdit;
+
+
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.memo_insert_activity);
+
+        mTitleEdit = (EditText)findViewById(R.id.title);
+        mMemoEdit = (EditText) findViewById(R.id.memoEdit);
+        mPhoto = (ImageView)findViewById(R.id.photo_space);
+
+        mPhoto.setOnClickListener(new View.OnClickListener() {      //사진을 클릭하면 다이얼로그 띄우기!
+            public void onClick(View v) {
+                if(isPhotoCaptured || isPhotoFileSaved) {
+                    showDialog(BasicInfo.CONTENT_PHOTO_EX);     //2005
+                } else {
+                    showDialog(BasicInfo.CONTENT_PHOTO);        //2001
+                }
+            }
+        });
+
+
+        setBottomButtons(); //제일 마지막 버튼 셋팅하기! (저장, 닫기-> 삭제, 음성, 손그림, 사진, 저장)
+
+        setCalendar();      //날짜 지정하기
+
+        Intent intent = getIntent();
+        mMemoMode = intent.getStringExtra(BasicInfo.KEY_MEMO_MODE);     //메모 모드에 (메모모드) 설정!
+        if(mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {  //메모모드가 수정이거나 보기 모드 일때
+            processIntent(intent);
+
+            //제목이랑 내용에 DB에 있는 내용 가져오기?
+            //원래는 타이틀에 "새매모" or "메모보기", 바닥 버튼에 "저장" or "수정" 이런 코드 있었음
+
+        } else {     //새로 입력하는 모드일때
+
+        }
+    }
+
+    public void processIntent(Intent intent) {          //DB에서 내용 가져오는 부분인듯?
+        mMemoId = intent.getStringExtra(BasicInfo.KEY_MEMO_ID);
+        mTitleEdit.setText(intent.getStringExtra(BasicInfo.KEY_MEMO_TITLE));
+        mMemoEdit.setText(intent.getStringExtra(BasicInfo.KEY_MEMO_TEXT));
+        mMediaPhotoId = intent.getStringExtra(BasicInfo.KEY_ID_PHOTO);
+        mMediaPhotoUri = intent.getStringExtra(BasicInfo.KEY_URI_PHOTO);
+        mMediaVoiceId = intent.getStringExtra(BasicInfo.KEY_ID_VOICE);
+        mMediaVoiceUri = intent.getStringExtra(BasicInfo.KEY_URI_VOICE);
+        mMediaHandwritingId = intent.getStringExtra(BasicInfo.KEY_ID_HANDWRITING);
+        mMediaHandwritingUri = intent.getStringExtra(BasicInfo.KEY_URI_HANDWRITING);
+
+        setMediaImage(mMediaPhotoId, mMediaPhotoUri, mMediaVoiceId, mMediaHandwritingId);
+    }
+
+    //미디어 이미지 지정
+    public void setMediaImage(String photoId, String photoUri, String voiceId, String handwritingId) {
+        Log.d(TAG, "[photoId : " + photoId + ", photoUri : " + photoUri + " ]*******************************************************************");
+
+        if(photoId.equals("") || photoId.equals("-1")) {
+            mPhoto.setImageResource(R.drawable.person_add);
+        } else {
+            isPhotoFileSaved = true;
+            mPhoto.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + photoUri));
+        }
+    }
+
+    /**
+     * 삭제, 음성, 손그림, 사진, 저장 버튼 설정!
+     */
+    public void setBottomButtons() {
+        //미디어 레이아웃 설정!
+        isPhotoCaptured = false;
+        isVoiceRecorded = false;
+        isHandwritingMade = false;
+
+        //버튼을 레이아웃과 연결!
+        DeleteBtn = (ImageButton) findViewById(R.id.deleteBtn);      //삭제버튼
+        VoiceBtn = (ImageButton) findViewById(R.id.voiceBtn);       //음성버튼
+        HandwritingBtn = (ImageButton) findViewById(R.id.handwritingBtn); //손그림버튼
+        PhotoBtn = (ImageButton) findViewById(R.id.photoBtn);       //사진버튼
+        SaveBtn = (ImageButton) findViewById(R.id.saveBtn);        //저장버튼
+
+        //삭제버튼 (새 매모 일때는 닫기와 같고, 수정메모 일때는 삭제버튼과 같음)
+        //음성버튼
+        //손그림버튼
+
+        //사진버튼
+        PhotoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(isPhotoCaptured || isPhotoFileSaved) {
+                    showDialog(BasicInfo.CONTENT_PHOTO_EX);     //2005
+                } else {
+                    showDialog(BasicInfo.CONTENT_PHOTO);        //2001
+                }
+            }
+        });
+
+
+        // 저장 버튼
+        SaveBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                boolean isParsed = parseValues();
+                if (isParsed) {
+                    if(mMemoMode.equals(BasicInfo.MODE_INSERT)) {   //새메모 모드면 saveInput()하고
+                        saveInput();
+                    } else if(mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {   //수정메모 모드면 modifyInput()실행
+                        modifyInput();
+                    }
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 저장버튼 눌렀을때 DB에 저장!
+     */
+    private void saveInput() {
+
+        String photoFilename = insertPhoto();       //Photo테이블에 사진 입력 하고!
+        int photoId = -1;
+
+        String SQL = null;
+
+        if (photoFilename != null) {
+            // query picture id
+            SQL = "select _ID from " + MemoDatabase.TABLE_PHOTO + " where URI = '" + photoFilename + "'";   //Photo테이블에서 사진id 검색해서
+            Log.d(TAG, "SQL : " + SQL);
+            if (MultiMemoActivity.mDatabase != null) {
+                Cursor cursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+                if (cursor.moveToNext()) {
+                    photoId = cursor.getInt(0); //검색한 사진 id 넣음
+                }
+                cursor.close();
+            }
+        }
+
+        //memo테이블에 입력하는 sql문
+        SQL = "insert into " + MemoDatabase.TABLE_MEMO +
+                "(INPUT_DATE, TITLE_TEXT, CONTENT_TEXT, ID_PHOTO, ID_VOICE, ID_HANDWRITING) values(" +
+                "DATETIME('" + mDateStr + "'), " +
+                "'"+ mTitleStr + "', " +
+                "'"+ mMemoStr + "', " +
+                "'"+ photoId + "', " +
+                "'"+ "" + "', " +
+                "'"+ "" + "')";
+
+        Log.d(TAG, "SQL : " + SQL);
+        if (MultiMemoActivity.mDatabase != null) {
+            MultiMemoActivity.mDatabase.execSQL(SQL);   //sql문 실행
+        }
+
+        Intent intent = getIntent();    //새로운 인텐트
+        setResult(RESULT_OK, intent);   //결과 출력
+        finish();
+    }
+
+    /**
+     * 수정버튼 눌렀을 때 DB에 저장
+     */
+    private void modifyInput() {
+
+        Intent intent = getIntent();
+
+        String photoFilename = insertPhoto();
+        int photoId = -1;
+
+        String SQL = null;
+
+        if (photoFilename != null) {    //들어간 사진이 있을때
+            // query picture id
+            SQL = "select _ID from " + MemoDatabase.TABLE_PHOTO + " where URI = '" + photoFilename + "'";   // DB의 사진테이블에서 사진아이디 검색
+            Log.d(TAG, "SQL : " + SQL);
+            if (MultiMemoActivity.mDatabase != null) {
+                Cursor cursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+                if (cursor.moveToNext()) {
+                    photoId = cursor.getInt(0); //사진 아이디 가져옴
+                }
+                cursor.close();
+
+                mMediaPhotoUri = photoFilename; //사진 uri도 바꾼사진 uri로 바꿈
+
+                //메모테이블의 사진id를 바꿈 (사진테이블에 참조하는 사진uri가 달라짐)
+                SQL = "update " + MemoDatabase.TABLE_MEMO +
+                        " set " +
+                        " ID_PHOTO = '" + photoId + "'" +
+                        " where _id = '" + mMemoId + "'";
+
+                if (MultiMemoActivity.mDatabase != null) {
+                    MultiMemoActivity.mDatabase.rawQuery(SQL);
+                }
+
+                mMediaPhotoId = String.valueOf(photoId);    //사진 아이디를 바꿈
+            }
+        } else if(isPhotoCanceled && isPhotoFileSaved) {    //사진이 삭제되거나 사진이 저장되어있으면,
+            SQL = "delete from " + MemoDatabase.TABLE_PHOTO +   //사진테이블에서 해당 사진id를 삭제함
+                    " where _ID = '" + mMediaPhotoId + "'";
+            Log.d(TAG, "SQL : " + SQL);
+            if (MultiMemoActivity.mDatabase != null) {
+                MultiMemoActivity.mDatabase.execSQL(SQL);
+            }
+
+            File photoFile = new File(BasicInfo.FOLDER_PHOTO + mMediaPhotoUri); //실제 파일도 지움
+            if (photoFile.exists()) {
+                photoFile.delete();
+            }
+
+            //memo테이블 수정!
+            SQL = "update " + MemoDatabase.TABLE_MEMO +
+                    " set " +
+                    " ID_PHOTO = '" + photoId + "'" +
+                    " where _id = '" + mMemoId + "'";
+
+            if (MultiMemoActivity.mDatabase != null) {
+                MultiMemoActivity.mDatabase.rawQuery(SQL);
+            }
+
+            mMediaPhotoId = String.valueOf(photoId);
+        }
+
+        //수정 sql문 적기 전에 시간 변경하는 코드 넣어야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //mDateStr = ~~~~~~~~~~~
+
+        // update memo info (사진 외 다른 정보 수정)
+        SQL = "update " + MemoDatabase.TABLE_MEMO +
+                " set " +
+                " INPUT_DATE = DATETIME('" + mDateStr + "'), " +
+                " TITLE_TEXT = '" + mTitleStr + "'," +
+                " CONTENT_TEXT = '" + mMemoStr + "'" +
+                " where _id = '" + mMemoId + "'";
+
+        Log.d(TAG, "SQL : " + SQL);
+        if (MultiMemoActivity.mDatabase != null) {
+            MultiMemoActivity.mDatabase.execSQL(SQL);
+        }
+
+        intent.putExtra(BasicInfo.KEY_MEMO_TITLE, mTitleStr);
+        intent.putExtra(BasicInfo.KEY_MEMO_TEXT, mMemoStr);
+        intent.putExtra(BasicInfo.KEY_ID_PHOTO, mMediaPhotoId);
+        intent.putExtra(BasicInfo.KEY_ID_VOICE, mMediaVoiceId);
+        intent.putExtra(BasicInfo.KEY_ID_HANDWRITING, mMediaHandwritingId);
+        intent.putExtra(BasicInfo.KEY_URI_PHOTO, mMediaPhotoUri);
+        intent.putExtra(BasicInfo.KEY_URI_VOICE, mMediaVoiceUri);
+        intent.putExtra(BasicInfo.KEY_URI_HANDWRITING, mMediaHandwritingUri);
+
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+
+
+    /**
+     * Photo테이블에 사진 정보 넣는 함수!
+     * @return 사진 이름값 (uri)
+     */
+
+    private String insertPhoto() {
+        String photoName = null;
+
+        if (isPhotoCaptured) { //사진이 캡쳐 되는 경우
+            try {
+                if (mMemoMode != null && mMemoMode.equals(BasicInfo.MODE_MODIFY)) { //메모모드가 수정
+                    Log.d(TAG, "previous photo is newly created for modify mode.");
+
+                    String SQL = "delete from " + MemoDatabase.TABLE_PHOTO +    //DB에서 이전 사진정보 삭제
+                            " where _ID = '" + mMediaPhotoId + "'";
+                    Log.d(TAG, "SQL : " + SQL);
+                    if (MultiMemoActivity.mDatabase != null) {
+                        MultiMemoActivity.mDatabase.execSQL(SQL);
+                    }
+
+                    File previousFile = new File(BasicInfo.FOLDER_PHOTO + mMediaPhotoUri);
+                    if (previousFile.exists()) {
+                        previousFile.delete();  //이전파일 삭제
+                    }
+                }
+
+
+                File photoFolder = new File(BasicInfo.FOLDER_PHOTO);
+
+                //사진폴더가 없을경우
+                if(!photoFolder.isDirectory()){
+                    Log.d(TAG, "creating photo folder : " + photoFolder);
+                    photoFolder.mkdirs(); //폴더 생성
+                }
+
+                // Temporary Hash for photo file name
+                photoName = createFilename();     //사진파일 이름을 생성(사진 uri)
+
+                FileOutputStream outstream = new FileOutputStream(BasicInfo.FOLDER_PHOTO + photoName);
+                resultPhotoBitmap.compress(Bitmap.CompressFormat.PNG, 100, outstream);
+                outstream.close();
+
+
+                if (photoName != null) {
+                    Log.d(TAG, "isCaptured            : " +isPhotoCaptured);
+
+                    // Photo테이블에 uri값 입력!
+                    String SQL = "insert into " + MemoDatabase.TABLE_PHOTO + "(URI) values(" + "'" + photoName + "')";
+                    if (MultiMemoActivity.mDatabase != null) {
+                        MultiMemoActivity.mDatabase.execSQL(SQL);
+                    }
+                }
+
+            } catch (IOException ex) {
+                Log.d(TAG, "Exception in copying photo : " + ex.toString());
+            }
+
+
+        }
+        return photoName;
+    }
+
+    //파일이름 생성하는 함수! (날짜로 생성함)
+    private String createFilename() {
+        Date curDate = new Date();
+        String curDateStr = String.valueOf(curDate.getTime());
+
+        return curDateStr;
+    }
+
+
+    //날짜 셋팅하는 함수
+    private void setCalendar(){
+        date_space = (TextView)findViewById(R.id.input_date);
+
+        Date curDate = new Date();
+        mCalendar.setTime(curDate);
+
+        int year = mCalendar.get(Calendar.YEAR);
+        int monthOfYear = mCalendar.get(Calendar.MONTH);
+        int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+
+        String mDateStr = year + "년 " + (monthOfYear+1) + "월 " + dayOfMonth + "일";
+
+        date_space.setText(mDateStr);
+    }
+
+
+    /**
+     *  값 파싱해서 변수값 지정
+     */
+    private boolean parseValues() {
+        String insertDateStr = date_space.getText().toString();
+        try {
+            Date insertDate = BasicInfo.dateDayNameFormat.parse(insertDateStr); //년 월 일 -> date타입
+            mDateStr = BasicInfo.dateDayFormat.format(insertDate);  //date타입 -> 0000-00-00
+        } catch(ParseException ex) {
+            Log.e(TAG, "Exception in parsing date : " + insertDateStr);
+        }
+        String titletxt = mTitleEdit.getText().toString();    //제목 edit에서 읽어서
+        mTitleStr = titletxt; //mTitleStr에 저장
+
+        String memotxt = mMemoEdit.getText().toString();    //메모 edit에서 읽어서
+        mMemoStr = memotxt; //mMemoStr에 저장
+
+        if (mMemoStr.trim().length() < 1) {
+            showDialog(BasicInfo.CONFIRM_TEXT_INPUT);
+            return false;
+        }
+        return true;
+    }
+
+    //다이얼로그 생성할때
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder = null;
+
+        switch(id) {
+                case BasicInfo.CONFIRM_TEXT_INPUT:      //3002
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("선택하세요");
+                builder.setMessage("텍스트를 입력하시겠습니까?");
+                builder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                break;
+
+            case BasicInfo.CONTENT_PHOTO:           //2001
+                builder = new AlertDialog.Builder(this);
+
+                mSelectdContentArray = R.array.array_photo;
+                builder.setTitle("선택하세요");
+                builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mChoicedArrayItem = whichButton;
+                    }
+                });
+                builder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if(mChoicedArrayItem == 0 ) {
+                            showPhotoCaptureActivity();
+                        } else if(mChoicedArrayItem == 1) {
+                            showPhotoSelectionActivity();
+                        }
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        Log.d(TAG, "whichButton3        ======        " + whichButton);
+                    }
+                });
+
+                break;
+
+            case BasicInfo.CONTENT_PHOTO_EX:
+                builder = new AlertDialog.Builder(this);
+
+                mSelectdContentArray = R.array.array_photo_ex;
+                builder.setTitle("선택하세요.");
+                builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mChoicedArrayItem = whichButton;
+                    }
+                });
+                builder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if(mChoicedArrayItem == 0) {
+                            showPhotoCaptureActivity();
+                        } else if(mChoicedArrayItem == 1) {
+                            showPhotoSelectionActivity();
+                        } else if(mChoicedArrayItem == 2) {
+                            isPhotoCanceled = true;
+                            isPhotoCaptured = false;
+
+                            mPhoto.setImageResource(R.drawable.person_add);
+                        }
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                break;
+
+            default:
+                break;
+        }
+
+        return builder.create();
+    }
+
+    //사진촬영 액티비티
+    public void showPhotoCaptureActivity() {
+        Intent intent = new Intent(getApplicationContext(), PhotoCaptureActivity.class);
+        startActivityForResult(intent, BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY);
+    }
+    //사진 불러오기 액티비티
+    public void showPhotoSelectionActivity() {
+        /*Intent intent = new Intent(getApplicationContext(), PhotoSelectionActivity.class);
+        startActivityForResult(intent, BasicInfo.REQ_PHOTO_SELECTION_ACTIVITY);*/
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, BasicInfo.REQ_PHOTO_SELECTION_ACTIVITY);
+    }
+
+    /**
+     *  액티비티 결과 처리
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        switch(requestCode) {
+            case BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY:  // 사진촬용 액티비티로 부터 응답처리
+                Log.d(TAG, "onActivityResult() for REQ_PHOTO_CAPTURE_ACTIVITY.");
+
+                if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "resultCode : " + resultCode);
+
+                    boolean isPhotoExists = checkCapturedPhotoFile();
+                    if (isPhotoExists) {
+                        Log.d(TAG, "image file exists : " + BasicInfo.FOLDER_PHOTO + "captured");
+
+                        //사진촬용으로 저장된 파일을 디코딩하여 비트맵 이미지로 생성
+                        resultPhotoBitmap = BitmapFactory.decodeFile(BasicInfo.FOLDER_PHOTO + "captured");
+
+                        tempPhotoUri = "captured";
+
+                        mPhoto.setImageBitmap(resultPhotoBitmap);
+                        isPhotoCaptured = true;
+
+                        mPhoto.invalidate();
+                    } else {
+                        Log.d(TAG, "image file doesn't exists : " + BasicInfo.FOLDER_PHOTO + "captured");
+                    }
+                }
+
+                break;
+
+            case BasicInfo.REQ_PHOTO_SELECTION_ACTIVITY:  // 앨범선택 액티비티로 부터 응답처리
+                Log.d(TAG, "onActivityResult() for REQ_PHOTO_LOADING_ACTIVITY.");
+
+                if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "resultCode : " + resultCode);
+                    try{
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 8;   //사진 크기 조절
+
+                        InputStream in = getContentResolver().openInputStream(intent.getData());
+
+                        resultPhotoBitmap = BitmapFactory.decodeStream(in, null, options);
+                        in.close();
+
+                        //이미지 표시
+                        mPhoto.setImageBitmap(resultPhotoBitmap);
+                        isPhotoCaptured = true;
+
+                        mPhoto.invalidate();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                   /* //앨범에서 선택된 사진의 uri정보를 응답 인텐트의 부가 데이터로 참조
+                    Uri getPhotoUri = intent.getParcelableExtra(BasicInfo.KEY_URI_PHOTO);
+                    try {
+
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 8;
+
+                        //uri정보를 이용해서 비트맵 이미지로 생성
+                        resultPhotoBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(getPhotoUri), null, options);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    mPhoto.setImageBitmap(resultPhotoBitmap);
+                    isPhotoCaptured = true;
+
+                    mPhoto.invalidate();*/
+                }
+
+                break;
+
+        }
+    }
+
+
+    /**
+     * ����� ���� ���� Ȯ��
+     */
+    private boolean checkCapturedPhotoFile() {
+        File file = new File(BasicInfo.FOLDER_PHOTO + "captured");
+        if(file.exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
+}

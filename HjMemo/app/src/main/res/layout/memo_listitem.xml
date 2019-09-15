@@ -67,7 +67,7 @@
     <ImageView
         android:id="@+id/itemImageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
         android:maxWidth="60dp"

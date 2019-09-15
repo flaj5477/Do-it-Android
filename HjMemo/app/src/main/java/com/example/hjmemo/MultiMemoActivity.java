@@ -1,6 +1,7 @@
 package com.example.hjmemo;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 
@@ -46,7 +49,6 @@ public class MultiMemoActivity extends AppCompatActivity {
                 Log.d(TAG, "ExternalPath : " + BasicInfo.ExternalPath);
 
                 BasicInfo.FOLDER_PHOTO = BasicInfo.ExternalPath + BasicInfo.FOLDER_PHOTO;
-                BasicInfo.FOLDER_VIDEO = BasicInfo.ExternalPath + BasicInfo.FOLDER_VIDEO;
                 BasicInfo.FOLDER_VOICE = BasicInfo.ExternalPath + BasicInfo.FOLDER_VOICE;
                 BasicInfo.FOLDER_HANDWRITING = BasicInfo.ExternalPath + BasicInfo.FOLDER_HANDWRITING;
                 BasicInfo.DATABASE_NAME = BasicInfo.ExternalPath + BasicInfo.DATABASE_NAME;
@@ -71,9 +73,56 @@ public class MultiMemoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "newMemoBtn clicked.");
                 //메모 입력하는 페이지로 전환하도록!!
+                Intent intent = new Intent(getApplicationContext(), MemoInsertActivity.class);
+                intent.putExtra(BasicInfo.KEY_MEMO_MODE, BasicInfo.MODE_INSERT);    //새 메모모드 전달!
+                startActivityForResult(intent, BasicInfo.REQ_INSERT_ACTIVITY);  //액티비티 요청코드: 1002
             }
         });
 
+        checkDangerousPermissions();        //권한 허가 체크 함수
+    }
+
+    //권한 허가 체크 함수
+    private void checkDangerousPermissions() {
+        String[] permissions = {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.RECORD_AUDIO
+        };
+
+        int permissionCheck = PackageManager.PERMISSION_GRANTED;
+        for (int i = 0; i < permissions.length; i++) {
+            permissionCheck = ActivityCompat.checkSelfPermission(this, permissions[i]);
+            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+                break;
+            }
+        }
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "권한 있음", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "권한 없음", Toast.LENGTH_LONG).show();
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
+                Toast.makeText(this, "권한 설명 필요함.", Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions(this, permissions, 1);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, permissions[i] + " 권한이 승인됨.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, permissions[i] + " 권한이 승인되지 않음.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     //시작할때 실행
@@ -106,7 +155,7 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     //메모리스트 데이터를 생성하는 메소드
     public int loadMemoListData() {
-        String SQL = "select _id, INPUT_DATE, CONTENT_TEXT, ID_PHOTO, ID_VIDEO, ID_VOICE, ID_HANDWRITING from MEMO order by INPUT_DATE desc";  //DB데이터 참조 SQL문
+        String SQL = "select _id, INPUT_DATE, TITLE_TEXT, CONTENT_TEXT, ID_PHOTO, ID_VOICE, ID_HANDWRITING from MEMO order by INPUT_DATE desc";  //DB데이터 참조 SQL문
 
         int recordCount = -1;
         if (MultiMemoActivity.mDatabase != null) {
@@ -139,7 +188,8 @@ public class MultiMemoActivity extends AppCompatActivity {
                 String handwritingId = outCursor.getString(6);  //손그림 _id
                 String handwritingUriStr = null;
 
-                mMemoListAdapter.addItem(new MemoListItem(memoId, dateStr, memoStr, handwritingId, handwritingUriStr, photoId, photoUriStr, voiceId, voiceUriStr));
+                mMemoListAdapter.addItem(new MemoListItem(memoId, dateStr, titleStr, memoStr, handwritingId, handwritingUriStr, photoId, photoUriStr, voiceId, voiceUriStr));
+                Log.d( TAG, "제목: " + titleStr + "사진 URI : " + photoUriStr);
             }
 
             outCursor.close();
@@ -168,5 +218,42 @@ public class MultiMemoActivity extends AppCompatActivity {
 
     //메모 보여주기
     private void viewMemo(int position) {
+        MemoListItem item = (MemoListItem)mMemoListAdapter.getItem(position);
+
+        //새로운 인텐트 생성!
+        Intent intent = new Intent(getApplicationContext(), MemoInsertActivity.class);
+        intent.putExtra(BasicInfo.KEY_MEMO_MODE, BasicInfo.MODE_VIEW);
+        intent.putExtra(BasicInfo.KEY_MEMO_ID, item.getId());
+        intent.putExtra(BasicInfo.KEY_MEMO_DATE, item.getData(0));
+        intent.putExtra(BasicInfo.KEY_MEMO_TITLE, item.getData(1));
+        intent.putExtra(BasicInfo.KEY_MEMO_TEXT, item.getData(2));
+
+        intent.putExtra(BasicInfo.KEY_ID_HANDWRITING, item.getData(3));
+        intent.putExtra(BasicInfo.KEY_URI_HANDWRITING, item.getData(4));
+
+        intent.putExtra(BasicInfo.KEY_ID_PHOTO, item.getData(5));
+        intent.putExtra(BasicInfo.KEY_URI_PHOTO, item.getData(6));
+
+        intent.putExtra(BasicInfo.KEY_ID_VOICE, item.getData(7));
+        intent.putExtra(BasicInfo.KEY_URI_VOICE, item.getData(8));
+
+        startActivityForResult(intent, BasicInfo.REQ_VIEW_ACTIVITY);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case BasicInfo.REQ_INSERT_ACTIVITY:
+                if(resultCode == RESULT_OK) {
+                    loadMemoListData();
+                }
+                break;
+
+            case BasicInfo.REQ_VIEW_ACTIVITY:
+                loadMemoListData();
+                break;
+
+        }
     }
 }

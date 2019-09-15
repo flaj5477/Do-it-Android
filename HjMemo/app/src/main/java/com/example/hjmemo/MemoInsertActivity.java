@@ -12,15 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +40,7 @@ public class MemoInsertActivity extends Activity {
     TextView date_space;
     EditText mMemoEdit;         //텍스트 표시 객체
     ImageView mPhoto;           //사진 표시 객체
-    View insert_handwriting;    //손그림 표시 객체
+    ImageView insert_handwriting;    //손그림 표시 객체
 
     String mMemoMode;           //메모 모드(손그림입력모드인지, 그런거...?)
     String mMemoId;             //메모 아이디
@@ -91,18 +86,19 @@ public class MemoInsertActivity extends Activity {
     EditText insert_memoEdit;
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memo_insert_activity);
 
-        mTitleEdit = (EditText)findViewById(R.id.title);
+        mTitleEdit = (EditText) findViewById(R.id.title);
         mMemoEdit = (EditText) findViewById(R.id.memoEdit);
-        mPhoto = (ImageView)findViewById(R.id.photo_space);
+        mPhoto = (ImageView) findViewById(R.id.photo_space);
+        
+        insert_handwriting = (ImageView)findViewById(R.id.handwt_space);
 
         mPhoto.setOnClickListener(new View.OnClickListener() {      //사진을 클릭하면 다이얼로그 띄우기!
             public void onClick(View v) {
-                if(isPhotoCaptured || isPhotoFileSaved) {
+                if (isPhotoCaptured || isPhotoFileSaved) {
                     showDialog(BasicInfo.CONTENT_PHOTO_EX);     //2005
                 } else {
                     showDialog(BasicInfo.CONTENT_PHOTO);        //2001
@@ -117,7 +113,7 @@ public class MemoInsertActivity extends Activity {
 
         Intent intent = getIntent();
         mMemoMode = intent.getStringExtra(BasicInfo.KEY_MEMO_MODE);     //메모 모드에 (메모모드) 설정!
-        if(mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {  //메모모드가 수정이거나 보기 모드 일때
+        if (mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {  //메모모드가 수정이거나 보기 모드 일때
             processIntent(intent);
 
             //제목이랑 내용에 DB에 있는 내용 가져오기?
@@ -142,16 +138,42 @@ public class MemoInsertActivity extends Activity {
         setMediaImage(mMediaPhotoId, mMediaPhotoUri, mMediaVoiceId, mMediaHandwritingId);
     }
 
+    public void showVoiceRecordingActivity() {
+        Log.d(TAG,"화정 -> showVoiceRecording Activity 까지 실행함");
+        Intent intent = new Intent(getApplicationContext(), VoiceRecordingActivity.class);
+        startActivityForResult(intent, BasicInfo.REQ_VOICE_RECORDING_ACTIVITY);
+    }
+
+    public void showVoicePlayingActivity() {
+        Intent intent = new Intent(getApplicationContext(), VoicePlayActivity.class);
+        intent.putExtra(BasicInfo.KEY_URI_VOICE, BasicInfo.FOLDER_VOICE + tempVoiceUri);
+        startActivity(intent);
+    }
+
+
     //미디어 이미지 지정
     public void setMediaImage(String photoId, String photoUri, String voiceId, String handwritingId) {
-        Log.d(TAG, "[photoId : " + photoId + ", photoUri : " + photoUri + " ]*******************************************************************");
+        Log.d(TAG, "[photoId : " + photoId + ", photoUri : " + photoUri + ", handwritingId : " + handwritingId + " ]*******************************************************************");
 
-        if(photoId.equals("") || photoId.equals("-1")) {
-            mPhoto.setImageResource(R.drawable.person_add);
+        if (photoId.equals("") || photoId.equals("-1")) {
+            mPhoto.setImageResource(R.drawable.add_photo);
         } else {
             isPhotoFileSaved = true;
             mPhoto.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + photoUri));
         }
+
+        if(handwritingId.equals("") || handwritingId.equals("-1")) {
+
+        } else {
+            isHandwritingFileSaved = true;
+            tempHandwritingUri = mMediaHandwritingUri;
+
+            Bitmap resultBitmap = BitmapFactory.decodeFile(BasicInfo.FOLDER_HANDWRITING + tempHandwritingUri);
+            Log.d(TAG,"손그림 비트맵 경로? -> " + BasicInfo.FOLDER_HANDWRITING + tempHandwritingUri);
+            insert_handwriting.setImageBitmap(resultBitmap);
+        }
+        
+        
     }
 
     /**
@@ -171,13 +193,44 @@ public class MemoInsertActivity extends Activity {
         SaveBtn = (ImageButton) findViewById(R.id.saveBtn);        //저장버튼
 
         //삭제버튼 (새 매모 일때는 닫기와 같고, 수정메모 일때는 삭제버튼과 같음)
+        DeleteBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {  //메모모드가 수정이거나 보기 모드 일때
+                    showDialog(BasicInfo.CONFIRM_DELETE);                    //삭제 후 닫기
+                } else {        //메모모드가 입력일때
+                    finish();   //그냥 닫기
+                }
+            }
+        });
+
         //음성버튼
+        VoiceBtn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                if(isVoiceRecorded || isVoiceFileSaved)
+                {
+                    showDialog(BasicInfo.CONTENT_VOICE_EX);     //실행하는 다이얼로그
+                }
+                else
+                {
+                    showDialog(BasicInfo.CONTENT_VOICE);        //녹음하는 다이얼로그
+                }
+            }
+        });
+
+
         //손그림버튼
+        HandwritingBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HandwritingMakingActivity.class);
+                startActivityForResult(intent, BasicInfo.REQ_HANDWRITING_MAKING_ACTIVITY);
+            }
+        });
 
         //사진버튼
         PhotoBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(isPhotoCaptured || isPhotoFileSaved) {
+                if (isPhotoCaptured || isPhotoFileSaved) {
                     showDialog(BasicInfo.CONTENT_PHOTO_EX);     //2005
                 } else {
                     showDialog(BasicInfo.CONTENT_PHOTO);        //2001
@@ -191,9 +244,9 @@ public class MemoInsertActivity extends Activity {
             public void onClick(View v) {
                 boolean isParsed = parseValues();
                 if (isParsed) {
-                    if(mMemoMode.equals(BasicInfo.MODE_INSERT)) {   //새메모 모드면 saveInput()하고
+                    if (mMemoMode.equals(BasicInfo.MODE_INSERT)) {   //새메모 모드면 saveInput()하고
                         saveInput();
-                    } else if(mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {   //수정메모 모드면 modifyInput()실행
+                    } else if (mMemoMode.equals(BasicInfo.MODE_MODIFY) || mMemoMode.equals(BasicInfo.MODE_VIEW)) {   //수정메모 모드면 modifyInput()실행
                         modifyInput();
                     }
                 }
@@ -225,15 +278,32 @@ public class MemoInsertActivity extends Activity {
             }
         }
 
+        //손그림 저장하고
+        String handwritingFileName = insertHandwriting();
+        int handwritingId = -1;
+
+        if (handwritingFileName != null) {
+            // query picture id
+            SQL = "select _ID from " + MemoDatabase.TABLE_HANDWRITING + " where URI = '" + handwritingFileName + "'";
+            Log.d(TAG, "SQL : " + SQL);
+            if (MultiMemoActivity.mDatabase != null) {
+                Cursor cursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+                if (cursor.moveToNext()) {
+                    handwritingId = cursor.getInt(0);
+                }
+                cursor.close();
+            }
+        }
+
         //memo테이블에 입력하는 sql문
         SQL = "insert into " + MemoDatabase.TABLE_MEMO +
                 "(INPUT_DATE, TITLE_TEXT, CONTENT_TEXT, ID_PHOTO, ID_VOICE, ID_HANDWRITING) values(" +
                 "DATETIME('" + mDateStr + "'), " +
-                "'"+ mTitleStr + "', " +
-                "'"+ mMemoStr + "', " +
-                "'"+ photoId + "', " +
-                "'"+ "" + "', " +
-                "'"+ "" + "')";
+                "'" + mTitleStr + "', " +
+                "'" + mMemoStr + "', " +
+                "'" + photoId + "', " +
+                "'" + "" + "', " +
+                "'" + handwritingId + "')";
 
         Log.d(TAG, "SQL : " + SQL);
         if (MultiMemoActivity.mDatabase != null) {
@@ -282,7 +352,7 @@ public class MemoInsertActivity extends Activity {
 
                 mMediaPhotoId = String.valueOf(photoId);    //사진 아이디를 바꿈
             }
-        } else if(isPhotoCanceled && isPhotoFileSaved) {    //사진이 삭제되거나 사진이 저장되어있으면,
+        } else if (isPhotoCanceled && isPhotoFileSaved) {    //사진이 삭제되거나 사진이 저장되어있으면,
             SQL = "delete from " + MemoDatabase.TABLE_PHOTO +   //사진테이블에서 해당 사진id를 삭제함
                     " where _ID = '" + mMediaPhotoId + "'";
             Log.d(TAG, "SQL : " + SQL);
@@ -308,9 +378,64 @@ public class MemoInsertActivity extends Activity {
             mMediaPhotoId = String.valueOf(photoId);
         }
 
-        //수정 sql문 적기 전에 시간 변경하는 코드 넣어야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //mDateStr = ~~~~~~~~~~~
+        //손그림 저장
+        String handwritingFileName = insertHandwriting();
+        int handwritingId = -1;
 
+        if (handwritingFileName != null) {
+            // query picture id
+            SQL = "select _ID from " + MemoDatabase.TABLE_HANDWRITING + " where URI = '" + handwritingFileName + "'";
+            Log.d(TAG, "SQL : " + SQL);
+            if (MultiMemoActivity.mDatabase != null) {
+                Cursor cursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+                if (cursor.moveToNext()) {
+                    handwritingId = cursor.getInt(0);
+                    Log.d (TAG, "Handwrite_SQL_cursor: " + handwritingId);        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~지우기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                }
+                cursor.close();
+
+                mMediaHandwritingUri = handwritingFileName;
+
+                SQL = "update " + MemoDatabase.TABLE_MEMO +
+                        " set " +
+                        " ID_HANDWRITING = '" + handwritingId + "' " +
+                        " where _id = '" + mMemoId + "'";
+                Log.d(TAG, "Handwrite_SQL: " + SQL);                     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~지우기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                if (MultiMemoActivity.mDatabase != null) {
+                    MultiMemoActivity.mDatabase.rawQuery(SQL);
+                }
+
+                mMediaHandwritingId = String.valueOf(handwritingId);
+            }
+        } else if(isHandwritingCanceled && isHandwritingFileSaved) {
+            SQL = "delete from " + MemoDatabase.TABLE_HANDWRITING +
+                    " where _ID = '" + mMediaHandwritingId + "'";
+            Log.d(TAG, "Handwrite_SQL: " + SQL);                     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~지우기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            if (MultiMemoActivity.mDatabase != null) {
+                MultiMemoActivity.mDatabase.execSQL(SQL);
+            }
+
+            File handwritingFile = new File(BasicInfo.FOLDER_HANDWRITING + mMediaHandwritingUri);
+            if (handwritingFile.exists()) {
+                handwritingFile.delete();
+            }
+
+            SQL = "update " + MemoDatabase.TABLE_MEMO +
+                    " set " +
+                    " ID_HANDWRITING = '" + handwritingId + "' " +
+                    " where _id = '" + mMemoId + "'";
+            Log.d(TAG, "Handwrite_SQL: " + SQL);                     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~지우기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            if (MultiMemoActivity.mDatabase != null) {
+                MultiMemoActivity.mDatabase.rawQuery(SQL);
+            }
+
+            mMediaHandwritingId = String.valueOf(handwritingId);
+        }
+
+
+
+        //수정 sql문 적기 전에 시간 변경하는 코드 넣어야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*************************************미완****************
+        //mDateStr = ~~~~~~~~~~~
         // update memo info (사진 외 다른 정보 수정)
         SQL = "update " + MemoDatabase.TABLE_MEMO +
                 " set " +
@@ -338,9 +463,9 @@ public class MemoInsertActivity extends Activity {
     }
 
 
-
     /**
      * Photo테이블에 사진 정보 넣는 함수!
+     *
      * @return 사진 이름값 (uri)
      */
 
@@ -369,7 +494,7 @@ public class MemoInsertActivity extends Activity {
                 File photoFolder = new File(BasicInfo.FOLDER_PHOTO);
 
                 //사진폴더가 없을경우
-                if(!photoFolder.isDirectory()){
+                if (!photoFolder.isDirectory()) {
                     Log.d(TAG, "creating photo folder : " + photoFolder);
                     photoFolder.mkdirs(); //폴더 생성
                 }
@@ -383,7 +508,7 @@ public class MemoInsertActivity extends Activity {
 
 
                 if (photoName != null) {
-                    Log.d(TAG, "isCaptured            : " +isPhotoCaptured);
+                    Log.d(TAG, "isCaptured            : " + isPhotoCaptured);
 
                     // Photo테이블에 uri값 입력!
                     String SQL = "insert into " + MemoDatabase.TABLE_PHOTO + "(URI) values(" + "'" + photoName + "')";
@@ -401,6 +526,67 @@ public class MemoInsertActivity extends Activity {
         return photoName;
     }
 
+    private String insertHandwriting() {
+        String handwritingName = null;
+        Log.d(TAG, "isHandwritingMade            : " +isHandwritingMade);
+        if (isHandwritingMade) { // captured Bitmap
+            try {
+
+                if (mMemoMode != null && (mMemoMode.equals(BasicInfo.MODE_MODIFY)  || mMemoMode.equals(BasicInfo.MODE_VIEW))) {
+                    Log.d(TAG, "previous handwriting is newly created for modify mode.");
+
+                    String SQL = "delete from " + MemoDatabase.TABLE_HANDWRITING +
+                            " where _ID = '" + mMediaHandwritingId + "'";
+                    Log.d(TAG, "SQL : " + SQL);
+                    if (MultiMemoActivity.mDatabase != null) {
+                        MultiMemoActivity.mDatabase.execSQL(SQL);
+                    }
+
+                    File previousFile = new File(BasicInfo.FOLDER_HANDWRITING + mMediaHandwritingUri);
+                    if (previousFile.exists()) {
+                        previousFile.delete();
+                    }
+                }
+
+
+                File handwritingFolder = new File(BasicInfo.FOLDER_HANDWRITING);
+
+                //폴더가 없다면 폴더를 생성한다.
+                if(!handwritingFolder.isDirectory()){
+                    Log.d(TAG, "creating handwriting folder : " + handwritingFolder);
+                    handwritingFolder.mkdirs();
+                }
+
+                // Temporal Hash for handwriting file name
+
+                handwritingName = createFilename();
+
+                FileOutputStream outstream = new FileOutputStream(BasicInfo.FOLDER_HANDWRITING + handwritingName);
+                // MIKE 20101215
+                resultHandwritingBitmap.compress(Bitmap.CompressFormat.PNG, 100, outstream);
+                // MIKE END
+                outstream.close();
+
+
+                if (handwritingName != null) {
+                    Log.d(TAG, "isCaptured            : " +isHandwritingMade);
+
+                    // INSERT HANDWRITING INFO
+                    String SQL = "insert into " + MemoDatabase.TABLE_HANDWRITING + "(URI) values(" + "'" + handwritingName + "')";
+                    if (MultiMemoActivity.mDatabase != null) {
+                        MultiMemoActivity.mDatabase.execSQL(SQL);
+                    }
+                }
+
+            } catch (IOException ex) {
+                Log.d(TAG, "Exception in copying handwriting : " + ex.toString());
+            }
+
+
+        }
+        return handwritingName;
+    }
+
     //파일이름 생성하는 함수! (날짜로 생성함)
     private String createFilename() {
         Date curDate = new Date();
@@ -411,8 +597,8 @@ public class MemoInsertActivity extends Activity {
 
 
     //날짜 셋팅하는 함수
-    private void setCalendar(){
-        date_space = (TextView)findViewById(R.id.input_date);
+    private void setCalendar() {
+        date_space = (TextView) findViewById(R.id.input_date);
 
         Date curDate = new Date();
         mCalendar.setTime(curDate);
@@ -421,21 +607,21 @@ public class MemoInsertActivity extends Activity {
         int monthOfYear = mCalendar.get(Calendar.MONTH);
         int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 
-        String mDateStr = year + "년 " + (monthOfYear+1) + "월 " + dayOfMonth + "일";
+        String mDateStr = year + "년 " + (monthOfYear + 1) + "월 " + dayOfMonth + "일";
 
         date_space.setText(mDateStr);
     }
 
 
     /**
-     *  값 파싱해서 변수값 지정
+     * 값 파싱해서 변수값 지정
      */
     private boolean parseValues() {
         String insertDateStr = date_space.getText().toString();
         try {
             Date insertDate = BasicInfo.dateDayNameFormat.parse(insertDateStr); //년 월 일 -> date타입
             mDateStr = BasicInfo.dateDayFormat.format(insertDate);  //date타입 -> 0000-00-00
-        } catch(ParseException ex) {
+        } catch (ParseException ex) {
             Log.e(TAG, "Exception in parsing date : " + insertDateStr);
         }
         String titletxt = mTitleEdit.getText().toString();    //제목 edit에서 읽어서
@@ -455,8 +641,8 @@ public class MemoInsertActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         AlertDialog.Builder builder = null;
 
-        switch(id) {
-                case BasicInfo.CONFIRM_TEXT_INPUT:      //3002
+        switch (id) {
+            case BasicInfo.CONFIRM_TEXT_INPUT:      //3002
                 builder = new AlertDialog.Builder(this);
                 builder.setTitle("선택하세요");
                 builder.setMessage("텍스트를 입력하시겠습니까?");
@@ -480,9 +666,9 @@ public class MemoInsertActivity extends Activity {
                 });
                 builder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if(mChoicedArrayItem == 0 ) {
+                        if (mChoicedArrayItem == 0) {
                             showPhotoCaptureActivity();
-                        } else if(mChoicedArrayItem == 1) {
+                        } else if (mChoicedArrayItem == 1) {
                             showPhotoSelectionActivity();
                         }
                     }
@@ -508,15 +694,15 @@ public class MemoInsertActivity extends Activity {
                 });
                 builder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if(mChoicedArrayItem == 0) {
+                        if (mChoicedArrayItem == 0) {
                             showPhotoCaptureActivity();
-                        } else if(mChoicedArrayItem == 1) {
+                        } else if (mChoicedArrayItem == 1) {
                             showPhotoSelectionActivity();
-                        } else if(mChoicedArrayItem == 2) {
+                        } else if (mChoicedArrayItem == 2) {
                             isPhotoCanceled = true;
                             isPhotoCaptured = false;
 
-                            mPhoto.setImageResource(R.drawable.person_add);
+                            mPhoto.setImageResource(R.drawable.add_photo);
                         }
                     }
                 });
@@ -528,11 +714,137 @@ public class MemoInsertActivity extends Activity {
 
                 break;
 
+            case BasicInfo.CONFIRM_DELETE:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.memo_title);
+                builder.setMessage(R.string.memo_delete_question);
+                builder.setPositiveButton(R.string.yes_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        deleteMemo();
+                    }
+                });
+                builder.setNegativeButton(R.string.no_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(BasicInfo.CONFIRM_DELETE);
+                    }
+                });
+
+                break;
+
+            case BasicInfo.CONTENT_VOICE:       //음성파일 녹음하는 다이얼로그
+                builder = new AlertDialog.Builder(this);
+
+                mSelectdContentArray = R.array.array_voice;
+                builder.setTitle(R.string.selection_title);
+                builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Log.d(TAG, "whichButton1 : " + whichButton);
+                        mChoicedArrayItem = whichButton;
+                    }
+                });
+                builder.setPositiveButton(R.string.selection_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Log.d(TAG, "whichButton2        ======        " + whichButton);
+                        if(mChoicedArrayItem == 0 ){
+                            showVoiceRecordingActivity();
+                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                break;
+
+            case BasicInfo.CONTENT_VOICE_EX:        //음성파일 실행하는 다이얼로그
+                builder = new AlertDialog.Builder(this);
+
+                mSelectdContentArray = R.array.array_voice_ex;
+                builder.setTitle(R.string.selection_title);
+                builder.setSingleChoiceItems(mSelectdContentArray, 0, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Log.d(TAG, "whichButton1 : " + whichButton);
+                        mChoicedArrayItem = whichButton;
+                    }
+                });
+                builder.setPositiveButton(R.string.selection_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Log.d(TAG, "Selected Index : " + mChoicedArrayItem);
+
+                        if(mChoicedArrayItem == 0 ) {
+                            showVoicePlayingActivity();
+                        } else if(mChoicedArrayItem == 1) {
+                            showVoiceRecordingActivity();
+                        } else if(mChoicedArrayItem == 2) {
+                            isVoiceCanceled = true;
+                            isVoiceRecorded = false;
+
+                            VoiceBtn.setImageResource(R.drawable.icon_voice_empty);
+                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                break;
+
             default:
                 break;
         }
-
         return builder.create();
+    }
+
+    /**
+     * 메모 삭제
+     */
+    private void deleteMemo() {
+
+        // delete photo record
+        Log.d(TAG, "deleting previous photo record and file : " + mMediaPhotoId);
+        String SQL = "delete from " + MemoDatabase.TABLE_PHOTO +
+                " where _ID = '" + mMediaPhotoId + "'";
+        Log.d(TAG, "SQL : " + SQL);
+        if (MultiMemoActivity.mDatabase != null) {
+            MultiMemoActivity.mDatabase.execSQL(SQL);
+        }
+
+        File photoFile = new File(BasicInfo.FOLDER_PHOTO + mMediaPhotoUri);
+        if (photoFile.exists()) {
+            photoFile.delete();
+        }
+
+
+        // delete handwriting record
+        Log.d(TAG, "deleting previous handwriting record and file : " + mMediaHandwritingId);
+        SQL = "delete from " + MemoDatabase.TABLE_HANDWRITING +
+                " where _ID = '" + mMediaHandwritingId + "'";
+        Log.d(TAG, "SQL : " + SQL);
+        if (MultiMemoActivity.mDatabase != null) {
+            MultiMemoActivity.mDatabase.execSQL(SQL);
+        }
+
+        File handwritingFile = new File(BasicInfo.FOLDER_HANDWRITING + mMediaHandwritingUri);
+        if (handwritingFile.exists()) {
+            handwritingFile.delete();
+        }
+
+
+        // delete memo record
+        Log.d(TAG, "deleting previous memo record : " + mMemoId);
+        SQL = "delete from " + MemoDatabase.TABLE_MEMO +
+                " where _id = '" + mMemoId + "'";
+        Log.d(TAG, "SQL : " + SQL);
+        if (MultiMemoActivity.mDatabase != null) {
+            MultiMemoActivity.mDatabase.execSQL(SQL);
+        }
+        setResult(RESULT_OK);
+
+        finish();
     }
 
     //사진촬영 액티비티
@@ -540,6 +852,7 @@ public class MemoInsertActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), PhotoCaptureActivity.class);
         startActivityForResult(intent, BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY);
     }
+
     //사진 불러오기 액티비티
     public void showPhotoSelectionActivity() {
         /*Intent intent = new Intent(getApplicationContext(), PhotoSelectionActivity.class);
@@ -551,12 +864,12 @@ public class MemoInsertActivity extends Activity {
     }
 
     /**
-     *  액티비티 결과 처리
+     * 액티비티 결과 처리
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        switch(requestCode) {
+        switch (requestCode) {
             case BasicInfo.REQ_PHOTO_CAPTURE_ACTIVITY:  // 사진촬용 액티비티로 부터 응답처리
                 Log.d(TAG, "onActivityResult() for REQ_PHOTO_CAPTURE_ACTIVITY.");
 
@@ -588,7 +901,7 @@ public class MemoInsertActivity extends Activity {
 
                 if (resultCode == RESULT_OK) {
                     Log.d(TAG, "resultCode : " + resultCode);
-                    try{
+                    try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inSampleSize = 8;   //사진 크기 조절
 
@@ -602,27 +915,42 @@ public class MemoInsertActivity extends Activity {
                         isPhotoCaptured = true;
 
                         mPhoto.invalidate();
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                   /* //앨범에서 선택된 사진의 uri정보를 응답 인텐트의 부가 데이터로 참조
-                    Uri getPhotoUri = intent.getParcelableExtra(BasicInfo.KEY_URI_PHOTO);
-                    try {
+                }
 
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 8;
+                break;
+            case BasicInfo.REQ_HANDWRITING_MAKING_ACTIVITY:  // 손글씨를 저장하는 경우
+                Log.d(TAG, "onActivityResult() for REQ_HANDWRITING_MAKING_ACTIVITY.");
 
-                        //uri정보를 이용해서 비트맵 이미지로 생성
-                        resultPhotoBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(getPhotoUri), null, options);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if (resultCode == RESULT_OK) {
+                    boolean isHandwritingExists = checkMadeHandwritingFile();
+                    if(isHandwritingExists) {
+                        resultHandwritingBitmap = BitmapFactory.decodeFile(BasicInfo.FOLDER_HANDWRITING + "made");
+                        tempHandwritingUri = "made";
+
+                        isHandwritingMade = true;
+
+                        insert_handwriting.setImageBitmap(resultHandwritingBitmap);
                     }
+                }
 
-                    mPhoto.setImageBitmap(resultPhotoBitmap);
-                    isPhotoCaptured = true;
+                break;
 
-                    mPhoto.invalidate();*/
+            case BasicInfo.REQ_VOICE_RECORDING_ACTIVITY:  // 녹음하는 경우
+                Log.d(TAG, "onActivityResult() for REQ_VOICE_RECORDING_ACTIVITY.");
+
+                if (resultCode == RESULT_OK) {
+                    boolean isVoiceExists = checkRecordedVoiceFile();
+                    if(isVoiceExists) {
+                        tempVoiceUri = "recorded";
+
+                        isVoiceRecorded = true;
+
+                        VoiceBtn.setImageResource(R.drawable.icon_voice);
+                    }
                 }
 
                 break;
@@ -632,15 +960,40 @@ public class MemoInsertActivity extends Activity {
 
 
     /**
-     * ����� ���� ���� Ȯ��
+     *  저장된 사진 파일 확인
      */
     private boolean checkCapturedPhotoFile() {
         File file = new File(BasicInfo.FOLDER_PHOTO + "captured");
+        if (file.exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 저장된 손글씨 파일 확인
+     */
+    private boolean checkMadeHandwritingFile() {
+        File file = new File(BasicInfo.FOLDER_HANDWRITING + "made");
         if(file.exists()) {
             return true;
         }
 
         return false;
     }
+
+    /**
+     * 저장된 녹음 파일 확인
+     */
+    private boolean checkRecordedVoiceFile() {
+        File file = new File(BasicInfo.FOLDER_VOICE + "recorded");
+        if(file.exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

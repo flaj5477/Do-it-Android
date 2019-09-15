@@ -44,7 +44,7 @@ class MemoListItemView extends LinearLayout {
             itemTitle.setText(data);     //텍스트메모 설정
         }  else if (index == 2) {        //data = 이미지 파일 경로
             if (data == null || data.equals("-1") || data.equals("")) {
-                itemImageView.setImageResource(R.drawable.person_add);
+                itemImageView.setImageResource(R.drawable.add_photo);
             } else {
                 itemImageView.setImageURI(Uri.parse(BasicInfo.FOLDER_PHOTO + data));
             }
@@ -55,8 +55,8 @@ class MemoListItemView extends LinearLayout {
     }
 
     public void setMediaState(String sVoiceUri) {     //녹음 상태에 따라 아이콘 설정
-        if(sVoiceUri == null || sVoiceUri.trim().length() < 1 || sVoiceUri.equals("-1")) {
-            itemVoiceState.setImageResource(R.drawable.icon_voice);
+        if(sVoiceUri == null || sVoiceUri.trim().length() < 1 || sVoiceUri.equals("-1")) {  //없으면 화이트
+            itemVoiceState.setImageResource(R.drawable.icon_voice_white);
         } else {
             itemVoiceState.setImageResource(R.drawable.icon_voice);
         }

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
 
     <application
@@ -34,6 +34,35 @@
         <activity android:name=".PhotoSelectionActivity"
             android:screenOrientation="portrait"/>
 
-    </application>
+        <activity
+            android:name=".HandwritingMakingActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".PenPaletteDialog"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".ColorPaletteDialog"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".VoiceRecordingActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".VoicePlayActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:screenOrientation="portrait"
+            >
+        </activity>
 
+    </application>
 </manifest>

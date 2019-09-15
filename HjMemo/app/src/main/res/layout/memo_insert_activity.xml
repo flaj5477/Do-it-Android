@@ -1,161 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:weightSum="10">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:weightSum="10">
 
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:inputType="textPersonName"
-            android:textColor="#FF3696FF"
-            android:text="제목"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/input_date"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:text="날짜"
-            android:textColor="#FF3696FF"
-
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"
-            android:gravity="center"
-            android:isScrollContainer="true"
-            android:orientation="vertical"
-            android:overScrollMode="ifContentScrolls"
-            android:scrollbarAlwaysDrawHorizontalTrack="false"
-            android:scrollbarAlwaysDrawVerticalTrack="false">
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0C5FB8"
-                android:text="음성재생" />
-
-            <EditText
-                android:id="@+id/memoEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:scrollbarAlwaysDrawHorizontalTrack="false"
-                android:textColor="#FF3696FF"
-                android:text="내용을 입력하세요"
-                />
-
-            <ImageView
-                android:id="@+id/photo_space"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_weight="0"
-                tools:srcCompat="@tools:sample/avatars[3]" />
-
-            <ImageView
-                android:id="@+id/handwt_space"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                tools:srcCompat="@tools:sample/avatars[2]" />
-        </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonLayout"
+    <EditText
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_weight="0.8"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:hint="제목"
+        android:inputType="textPersonName"
+        android:textColor="#FF3696FF"
+        android:textColorHint="#0C8AD3"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/input_date"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:background="@drawable/border_bottom"
+        android:gravity="center"
+        android:text="날짜"
+        android:textColor="#FF3696FF"
+        android:textSize="12sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:isScrollContainer="true"
+            android:orientation="vertical"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            >
 
-            <ImageButton
-                android:id="@+id/deleteBtn"
+            <EditText
+                android:id="@+id/memoEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_bottom"
+                android:gravity="start"
+                android:hint="내용을 입력하세요"
+                android:inputType="textWebEditText|textFilter|textMultiLine"
+                android:minHeight="100dp"
+                android:scrollbarAlwaysDrawHorizontalTrack="false"
+                android:text=""
+                android:textColor="#FF3696FF"
+                android:textColorHint="#0C8AD3" />
+
+            <ImageView
+                android:id="@+id/photo_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#FF3696FF"
-                android:maxWidth="30dp"
-                android:maxHeight="30dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icon_trash" />
+                android:background="@drawable/border_bottom"
+                android:src="@drawable/add_photo" />
 
-            <ImageButton
-                android:id="@+id/voiceBtn"
+            <ImageView
+                android:id="@+id/handwt_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#FF3696FF"
-                android:maxWidth="30dp"
-                android:maxHeight="30dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icon_voice_white" />
-
-            <ImageButton
-                android:id="@+id/handwritingBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#FF3696FF"
-                android:maxWidth="30dp"
-                android:maxHeight="30dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icon_draw" />
-
-            <ImageButton
-                android:id="@+id/photoBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#FF3696FF"
-                android:maxWidth="30dp"
-                android:maxHeight="30dp"
-                android:scaleType="center"
-                app:srcCompat="@drawable/icon_photo" />
-
-            <ImageButton
-                android:id="@+id/saveBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#FF3696FF"
-                android:maxWidth="30dp"
-                android:maxHeight="30dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icon_save" />
-
+                android:src="@drawable/add_handwriting" />
         </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+
+        <ImageButton
+            android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_trash" />
+
+        <ImageButton
+            android:id="@+id/voiceBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:alpha="1"
+            android:background="@android:color/transparent"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_voice" />
+
+        <ImageButton
+            android:id="@+id/handwritingBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_draw" />
+
+        <ImageButton
+            android:id="@+id/photoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+
+            android:scaleType="center"
+            android:src="@drawable/icon_photo" />
+
+        <ImageButton
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_save" />
+
     </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

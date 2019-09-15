@@ -356,10 +356,10 @@ public class MultiMemoActivity extends AppCompatActivity {
 		if (id_voice != null && id_voice.trim().length() > 0 && !id_voice.equals("-1")) {
 			String SQL = "select URI from " + MemoDatabase.TABLE_VOICE + " where _ID = " + id_voice + "";
 			Cursor voiceCursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
-	    	if (voiceCursor.moveToNext()) {
-	    		voiceUriStr = voiceCursor.getString(0);
-	    	}
-	    	voiceCursor.close();
+			if (voiceCursor.moveToNext()) {
+				voiceUriStr = voiceCursor.getString(0);
+			}
+			voiceCursor.close();
 		} else {
 			voiceUriStr = "";
 		}

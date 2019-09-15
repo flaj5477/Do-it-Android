@@ -1,5 +1,6 @@
 package com.example.hjmemo;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -88,7 +89,8 @@ public class MultiMemoActivity extends AppCompatActivity {
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA,
-                android.Manifest.permission.RECORD_AUDIO
+                android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.WAKE_LOCK
         };
 
         int permissionCheck = PackageManager.PERMISSION_GRANTED;
@@ -183,10 +185,10 @@ public class MultiMemoActivity extends AppCompatActivity {
                 String photoUriStr = getPhotoUriStr(photoId);
 
                 String voiceId = outCursor.getString(5);    //메모음성파일 _id
-                String voiceUriStr = null;
+                String voiceUriStr = getVoiceUriStr(voiceId);
 
                 String handwritingId = outCursor.getString(6);  //손그림 _id
-                String handwritingUriStr = null;
+                String handwritingUriStr = getHandwritingUriStr(handwritingId);
 
                 mMemoListAdapter.addItem(new MemoListItem(memoId, dateStr, titleStr, memoStr, handwritingId, handwritingUriStr, photoId, photoUriStr, voiceId, voiceUriStr));
                 Log.d( TAG, "제목: " + titleStr + "사진 URI : " + photoUriStr);
@@ -215,6 +217,50 @@ public class MultiMemoActivity extends AppCompatActivity {
         }
         return photoUriStr;
     }
+
+    /**
+     * 손글씨 데이터 URI 가져오기
+     */
+    public String getHandwritingUriStr(String id_handwriting) {
+        Log.d(TAG, "Handwriting ID : " + id_handwriting);
+
+        String handwritingUriStr = null;
+        if (id_handwriting != null && id_handwriting.trim().length() > 0 && !id_handwriting.equals("-1")) {
+            String SQL = "select URI from " + MemoDatabase.TABLE_HANDWRITING + " where _ID = " + id_handwriting + "";
+            Cursor handwritingCursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+            if (handwritingCursor.moveToNext()) {
+                handwritingUriStr = handwritingCursor.getString(0);
+            }
+            handwritingCursor.close();
+        } else {
+            handwritingUriStr = "";
+        }
+
+        return handwritingUriStr;
+    }
+
+    /**
+     * 녹음 데이터 URI 가져오기
+     */
+    public String getVoiceUriStr(String id_voice) {
+        Log.d(TAG, "Voice ID : " + id_voice);
+
+        String voiceUriStr = null;
+        if (id_voice != null && id_voice.trim().length() > 0 && !id_voice.equals("-1")) {
+            String SQL = "select URI from " + MemoDatabase.TABLE_VOICE + " where _ID = " + id_voice + "";
+            Cursor voiceCursor = MultiMemoActivity.mDatabase.rawQuery(SQL);
+            if (voiceCursor.moveToNext()) {
+                voiceUriStr = voiceCursor.getString(0);
+            }
+            voiceCursor.close();
+        } else {
+            voiceUriStr = "";
+        }
+
+        return voiceUriStr;
+    }
+
+
 
     //메모 보여주기
     private void viewMemo(int position) {

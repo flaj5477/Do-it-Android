@@ -2,42 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9db91fc-0964-48b3-945f-a342ff0094f2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/CameraSurfaceView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/CoverFlow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoInsertActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/PhotoCaptureActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/PhotoSelectionActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_capture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_save.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_voice_white.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/photo_capture_activity.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/photo_selection_activity.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/values/arrays.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/values/attrs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/MultiMemoStage02.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/BasicInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/BasicInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoListAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoListItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoListItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MultiMemoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MultiMemoActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_draw.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_draw.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_edit.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_edit.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_list_edit.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_list_edit.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_photo.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_photo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_trash.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_trash.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_voice.png" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/icon_voice.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/colorpalette.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/eraser.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/penpalette.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/drawable/undo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/handwriting_making_activity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoInsertActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/java/com/example/hjmemo/MemoInsertActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/memo_insert_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/memo_insert_activity.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/memo_listitem.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/layout/memo_listitem.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MultiMemoStage021/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MultiMemoStage021/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MultiMemoStage021/app/src/main/java/org/androidtown/multimemo/MemoInsertActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MultiMemoStage021/app/src/main/java/org/androidtown/multimemo/MemoInsertActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MultiMemoStage04/app/src/main/java/org/androidtown/multimemo/MultiMemoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MultiMemoStage04/app/src/main/java/org/androidtown/multimemo/MultiMemoActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../icon/save.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HjMemo/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../HjMemo/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MultiMemoStage04/app/src/main/res/layout/handwriting_making_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MultiMemoStage04/app/src/main/res/layout/handwriting_making_activity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../icon/eraser.png" beforeDir="false" afterPath="$PROJECT_DIR$/../icon/eraser.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../icon/eraser_color.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../icon/undo.png" beforeDir="false" afterPath="$PROJECT_DIR$/../icon/undo.png" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,77 +24,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/MemoInsertActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="344" column="62" lean-forward="true" selection-start-line="344" selection-start-column="62" selection-end-line="344" selection-end-column="62" />
+            <state relative-caret-position="198">
+              <caret line="359" column="31" selection-start-line="359" selection-start-column="26" selection-end-line="359" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/PhotoCaptureActivity.java">
+        <entry file="file://$PROJECT_DIR$/res/layout/memo_insert_activity.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="69" column="38" lean-forward="true" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/PhotoSelectionActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="158" column="65" lean-forward="true" selection-start-line="158" selection-start-column="65" selection-end-line="158" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/db/MemoDatabase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3040">
-              <caret line="88" column="7" lean-forward="true" selection-start-line="88" selection-start-column="7" selection-end-line="88" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/btn_camera_capture_click.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/btn_camera_capture_normal.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/MultiMemoActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="922">
-              <caret line="256" column="45" lean-forward="true" selection-start-line="256" selection-start-column="45" selection-end-line="256" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/CoverFlow.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1824">
-              <caret selection-end-line="1" />
+            <state relative-caret-position="3097">
+              <caret line="163" column="40" selection-start-line="163" selection-start-column="40" selection-end-line="163" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -132,17 +54,19 @@
       <find>onAc</find>
       <find>onCreate</find>
       <find>showDialog</find>
+      <find>modify</find>
       <find>delete</find>
+      <find>delet</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1939" />
+    <option name="height" value="1049" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -225,8 +149,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -260,23 +184,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.17382683" />
-      <window_info id="Structure" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="Resources Explorer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="TODO" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Preview" weight="0.3295302" />
-      <window_info anchor="right" id="Palette&#9;" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17382683" />
+      <window_info id="Structure" order="2" side_tool="true" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="Resources Explorer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="TODO" order="1" />
+      <window_info anchor="bottom" id="Terminal" order="2" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Theme Preview" order="1" />
+      <window_info anchor="right" id="Preview" order="2" weight="0.34832215" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -312,13 +237,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/MemoInsertActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="344" column="62" lean-forward="true" selection-start-line="344" selection-start-column="62" selection-end-line="344" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/btn_camera_capture_click.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -350,6 +268,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3040">
           <caret line="88" column="7" lean-forward="true" selection-start-line="88" selection-start-column="7" selection-end-line="88" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidtown/multimemo/MemoInsertActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="359" column="31" selection-start-line="359" selection-start-column="26" selection-end-line="359" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/memo_insert_activity.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3097">
+          <caret line="163" column="40" selection-start-line="163" selection-start-column="40" selection-end-line="163" selection-end-column="40" />
         </state>
       </provider>
     </entry>

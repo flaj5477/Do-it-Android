@@ -12,6 +12,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +27,10 @@ public class PhotoCaptureActivity extends Activity {
 
     public static final String TAG = "PhotoCaptureActivity";
 
-    CameraSurfaceView mCameraView;
+    //CameraSurfaceView mCameraView;
+    CameraPreview mCameraView;
+    private SurfaceView surfaceView;
+    private static final int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     FrameLayout mFrameLayout;
 
@@ -38,15 +42,22 @@ public class PhotoCaptureActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ���¹ٿ� Ÿ��Ʋ ����
         final Window win = getWindow();
+        //상태바 없애기
         win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.photo_capture_activity);
 
-        mCameraView = new CameraSurfaceView(getApplicationContext());
+        surfaceView = findViewById(R.id.camera_preview_main);
+
+
+        // 런타임 퍼미션 완료될때 까지 화면에서 보이지 않게 해야합니다.
+        surfaceView.setVisibility(View.GONE);
+
+        //mCameraView = new CameraSurfaceView(getApplicationContext());
+        mCameraView = new CameraPreview(getApplicationContext(), this, CAMERA_FACING, surfaceView);
         mFrameLayout = (FrameLayout) findViewById(R.id.frame);
         mFrameLayout.addView(mCameraView);
 
@@ -61,18 +72,20 @@ public class PhotoCaptureActivity extends Activity {
             public void onClick(View v) {
                 if (!processing) {
                     processing = true;
-                    mCameraView.capture(new CameraPictureCallback());
+                    //mCameraView.capture(new CameraPictureCallback());
+                    mCameraView.takePicture(new CameraPictureCallback());
                 }
             }
         });
     }
 
     /**
-     *
+     * 볼륨 다운 키 먹음
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_CAMERA) {
-            mCameraView.capture(new CameraPictureCallback());
+           // mCameraView.capture(new CameraPictureCallback());
+            mCameraView.takePicture(new CameraPictureCallback());
 
             return true;
         } else if(keyCode == KeyEvent.KEYCODE_BACK) {
@@ -132,8 +145,6 @@ public class PhotoCaptureActivity extends Activity {
             showParentActivity();
         }
     }
-
-
 
     /**
      * �θ� ��Ƽ��Ƽ�� ���ư���

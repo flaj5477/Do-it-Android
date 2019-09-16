@@ -9,8 +9,12 @@
         android:layout_height="match_parent"
 		android:layout_weight="1"
         android:layout_gravity="center"
-        android:id="@+id/frame" 
-        />
+		android:id="@+id/frame">
+		<SurfaceView
+			android:id="@+id/camera_preview_main"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+	</FrameLayout>
 
 	<ImageButton
 		android:id="@+id/capture_takeBtn"
@@ -20,5 +24,6 @@
 		android:layout_margin="10dp"
 		android:layout_weight="0"
 
+		android:background="#FF3696FF"
 		android:src="@drawable/icon_save" />
 </LinearLayout>

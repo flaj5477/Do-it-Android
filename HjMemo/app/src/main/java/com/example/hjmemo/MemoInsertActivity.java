@@ -903,7 +903,7 @@ public class MemoInsertActivity extends Activity {
                     Log.d(TAG, "resultCode : " + resultCode);
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 8;   //사진 크기 조절
+                        options.inSampleSize = 1;   //사진 크기 조절 1/1로 -> 4일때는 사진크기 1/4
 
                         InputStream in = getContentResolver().openInputStream(intent.getData());
 
